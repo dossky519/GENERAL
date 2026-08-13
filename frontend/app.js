@@ -22,8 +22,21 @@ function splitList(value) {
   return value.split(",").map((s) => s.trim()).filter((s) => s.length > 0);
 }
 
+function redirectToLogin() {
+  window.location.href = "/login";
+}
+
+async function apiFetch(path, options = {}) {
+  const res = await fetch(API_BASE + path, options);
+  if (res.status === 401) {
+    redirectToLogin();
+    throw new Error("로그인이 필요합니다.");
+  }
+  return res;
+}
+
 async function postJSON(path, body) {
-  const res = await fetch(API_BASE + path, {
+  const res = await apiFetch(path, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -34,6 +47,22 @@ async function postJSON(path, body) {
   }
   return data;
 }
+
+async function loadWhoAmI() {
+  try {
+    const res = await apiFetch("/api/me");
+    if (!res.ok) return;
+    const data = await res.json();
+    document.getElementById("whoami").textContent = `${data.username} 님으로 로그인됨`;
+  } catch (e) {
+    // apiFetch already redirects on 401
+  }
+}
+
+document.getElementById("btn-logout").addEventListener("click", async () => {
+  await fetch(API_BASE + "/api/logout", { method: "POST" });
+  redirectToLogin();
+});
 
 // --- auth method toggle -----------------------------------------------
 document.querySelectorAll('input[name=auth]').forEach((el) => {
@@ -184,7 +213,7 @@ document.getElementById("form-sgroup").addEventListener("submit", (ev) => {
 async function loadLogs() {
   const listEl = document.getElementById("log-list");
   try {
-    const res = await fetch(API_BASE + "/api/logs?limit=100");
+    const res = await apiFetch("/api/logs?limit=100");
     const data = await res.json();
     listEl.innerHTML = "";
     if (!data.entries || data.entries.length === 0) {
@@ -234,4 +263,5 @@ async function loadLogs() {
 
 document.getElementById("btn-refresh-logs").addEventListener("click", loadLogs);
 
+loadWhoAmI();
 loadLogs();

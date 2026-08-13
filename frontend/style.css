@@ -23,9 +23,27 @@ body {
 header {
   padding: 20px 28px;
   border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 header h1 { margin: 0; font-size: 20px; }
 header .sub { color: var(--muted); font-weight: 400; font-size: 14px; }
+header .header-right { display: flex; align-items: center; gap: 12px; }
+header .header-right .meta { color: var(--muted); font-size: 13px; }
+
+.login-main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.login-panel { width: 100%; max-width: 360px; }
+.login-panel form { display: flex; flex-direction: column; gap: 12px; }
+.login-panel button { margin-top: 4px; }
 
 main {
   max-width: 980px;
