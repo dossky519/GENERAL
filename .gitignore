@@ -1,0 +1,12 @@
+# 실제 보유 종목/관심종목 데이터 — 실계좌 정보이므로 공개 저장소에 올리지 않는다.
+# 형식 참고용 예시는 data/portfolio.example.md, data/watchlist.example.md 참고.
+data/portfolio.md
+data/watchlist.md
+
+# 스킬이 생성하는 개인화된 분석 결과물도 계좌 성격의 데이터를 담을 수 있어 기본 제외.
+# 공유하고 싶은 결과만 선택적으로 git add -f 로 추가한다.
+output/briefs/*.md
+output/cards/*.md
+output/dashboard.html
+!output/briefs/.gitkeep
+!output/cards/.gitkeep
